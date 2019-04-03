@@ -28,9 +28,7 @@ class PdfGeneratorService @Inject()(configuration: Configuration, resourceHelper
   val CONFIG_KEY = "pdfGeneratorService."
 
   // From application.conf or environment specific
-
   val BASE_DIR_DEV_MODE: Boolean = configuration.getBoolean(CONFIG_KEY + "baseDirDevMode").getOrElse(false)
-
 
   def getBaseDir: String = BASE_DIR_DEV_MODE match {
       case true => new File(".").getCanonicalPath + "/"

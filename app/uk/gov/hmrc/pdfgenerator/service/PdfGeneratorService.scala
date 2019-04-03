@@ -96,12 +96,12 @@ class PdfGeneratorService @Inject()(configuration: Configuration, resourceHelper
       ADOBE_COLOR_PROFILE, ADOBE_COLOR_PROFILE_FULL_PATH)
   }
 
-  def generatePdf(html: String, createPdfA: Boolean): Try[File] = {
+  def generatePdf(html: String, forcePdfA: Boolean): Try[File] = {
     logConfig()
     val inputFileName: String = UUID.randomUUID.toString + ".pdf"
     val outputFileName: String = UUID.randomUUID.toString + ".pdf"
     Logger.trace(s"generatePdf from $html")
-    val linksDisabled = if(createPdfA) true else getLinksDisabled(html)
+    val linksDisabled = if(forcePdfA) true else getLinksDisabled(html)
 
     try {
 

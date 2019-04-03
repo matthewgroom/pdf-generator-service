@@ -129,7 +129,9 @@ class PdfGeneratorService @Inject()(configuration: Configuration, resourceHelper
     * @return true or false
     */
   def getLinksDisabled(html: String): Boolean = {
+    val startTime = System.currentTimeMillis()
     val links = extractLinksFromHtml(html)
+    Logger.trace("Checking document for links took " + (System.currentTimeMillis() - startTime) + " milliseconds")
     if(onlyContainsValidLinks(links)) false else true
   }
 

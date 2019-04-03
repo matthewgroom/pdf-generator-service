@@ -2,8 +2,6 @@ package uk.gov.hmrc.pdfgenerator.controllers
 
 import org.scalatest.{FlatSpec, Matchers}
 
-
-
 class HtmlSupportSpec extends FlatSpec with Matchers with HtmlSupport {
 
 

@@ -22,7 +22,7 @@ All requests use the HTTP `POST` method
 	* Generated PDF must match the HTML page from which it was generated
 
 ## Request
-	* html-www-urlencoded-form with a single field 'html' that contains the html to be converted and optional 'create-pdfa' boolean field to enforce PDF/A generation.
+	* html-www-urlencoded-form with a required field 'html' that contains the html to be converted and an optional 'create-pdfa' boolean field to enforce PDF/A generation.
 	* post Content-Type: application/json {"html": "<html><title>Some Html</title></html>", "create-pdfa":"true"}
 
 ## Response

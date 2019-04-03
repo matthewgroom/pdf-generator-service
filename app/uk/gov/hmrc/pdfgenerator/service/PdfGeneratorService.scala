@@ -1,6 +1,7 @@
 package uk.gov.hmrc.pdfgenerator.service
 
 import java.io.{File, IOException}
+import java.net.URL
 import java.util.UUID
 
 import javax.inject.{Inject, Singleton}
@@ -28,8 +29,6 @@ class PdfGeneratorService @Inject()(configuration: Configuration, resourceHelper
 
   // From application.conf or environment specific
 
-  val RUN_MODE = configuration.getString(CONFIG_KEY + "runmode").getOrElse("prod").toLowerCase
-  val VALID_GOVUK_REGEX: String = configuration.getString(CONFIG_KEY + "validGovRegex").getOrElse("https://[a-z.]*gov.uk[/a-z0-9-]*")
   val BASE_DIR_DEV_MODE: Boolean = configuration.getBoolean(CONFIG_KEY + "baseDirDevMode").getOrElse(false)
 
 
@@ -141,8 +140,27 @@ class PdfGeneratorService @Inject()(configuration: Configuration, resourceHelper
     }
   }
 
+  private def parseUrl(url: String): Try[URL] = Try(new URL(url))
+
+  private def validateDomain(domain: String): Boolean = {
+    if (domain.endsWith("gov.uk") || domain.endsWith("localhost")) true
+    else {
+      Logger.warn(s"External link to $domain detected. All links in document will be disabled")
+      false
+    }
+  }
+
+  private def validateUrl(linkText: String): Boolean = {
+    parseUrl(linkText) match {
+      case Success(url) => validateDomain(url.getHost)
+      case Failure(e)   =>
+        Logger.error(s"Unable to parse link $linkText text as URL due to " + e.getMessage)
+        false
+    }
+  }
+
   private def onlyContainsValidLinks(links: List[String]):Boolean = {
-    links.forall(link => link.matches(VALID_GOVUK_REGEX))
+    links.forall(link => validateUrl(link))
   }
 
   private def generatePdfFromHtml(html: String, inputFileName: String, linksDisabled: Boolean): Try[File] = {

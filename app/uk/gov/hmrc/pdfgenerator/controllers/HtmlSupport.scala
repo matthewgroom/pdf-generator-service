@@ -32,7 +32,7 @@ trait HtmlSupport {
   def getPdfForm() = Form(
       mapping(
         "html" -> html,
-        "create-pdfa" -> default(boolean, false)
+        "create-pdfa" -> default(boolean, true)
       )(PdfForm.apply)(PdfForm.unapply)
     )
 }

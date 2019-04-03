@@ -20,7 +20,7 @@ class HtmlSupportSpec extends FlatSpec with Matchers with HtmlSupport {
     val form = getPdfForm()
 
     form.bind(Map("html" -> HTML,
-                  "create-pdfa" -> CREATE_PDF_A.toString)).fold(_ => "errors", h => {
+                  "force-pdfa" -> CREATE_PDF_A.toString)).fold(_ => "errors", h => {
       h shouldBe PdfForm(HTML,CREATE_PDF_A)
     })
 
